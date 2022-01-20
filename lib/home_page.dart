@@ -16,6 +16,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: color.AppColor.homePageBackground,
       body: Container(
         padding: EdgeInsets.only(top:70, left: 30, right: 30),
+        //main 
         child: Column(
           children: [
             Row(
@@ -70,7 +71,7 @@ class _HomePageState extends State<HomePage> {
               )
             ,
             SizedBox(height: 30,),
-            
+
             Container( 
               width: MediaQuery.of(context).size.width,
               height: 220,
@@ -167,7 +168,62 @@ class _HomePageState extends State<HomePage> {
               ),
             
             ),
-            SizedBox(height: 20,),
+            SizedBox(height: 5,),
+
+            Container(
+              height: 180,
+              width: MediaQuery.of(context).size.width,
+              child: Stack(
+                children: [
+                  Container(
+                    height: 120,
+                    margin: EdgeInsets.only(top: 30),
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(image: AssetImage(
+                        "assets/card.jpg",
+                        
+                      ),
+                      fit: BoxFit.fill
+                      ),
+                      boxShadow: [
+                        
+                        BoxShadow(
+                          color: color.AppColor.gradientSecond.withOpacity(0.3),
+                          offset: Offset(8,10 ),
+                          blurRadius: 40,
+                        ),
+                        BoxShadow(
+                          color: color.AppColor.gradientSecond.withOpacity(0.3),
+                          offset: Offset(-1,-5),
+                          blurRadius: 10,
+                        )
+                      ],
+                    ),
+                  ),
+                  
+                  Container(
+                    height: 200,
+                    width: MediaQuery.of(context).size.width,
+                    margin: EdgeInsets.only(right: 200, bottom: 30),
+                    decoration: BoxDecoration(
+                      // color: Colors.red.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          image: AssetImage(
+                          "assets/figure.png",
+                        ),
+                      ),
+                    ),
+                  
+                  ),
+                  
+
+                  
+                ],
+              ),
+            )
 
 
 
