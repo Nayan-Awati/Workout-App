@@ -206,7 +206,7 @@ class _HomePageState extends State<HomePage> {
                   Container(
                     height: 200,
                     width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.only(right: 200, bottom: 30),
+                    margin: EdgeInsets.only(right: 200, bottom: 30, left: 10),
                     decoration: BoxDecoration(
                       // color: Colors.red.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(10),
@@ -219,11 +219,55 @@ class _HomePageState extends State<HomePage> {
                   
                   ),
                   
-
-                  
+                  Container(
+                    height: 100,
+                    width: double.maxFinite,
+                    margin: const EdgeInsets.only(left: 150, top: 50,right: 10),
+                    // color: Colors.red.withOpacity(0.3),
+                    
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "You are doing great",
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: color.AppColor.homePageDetail ,
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        SizedBox(height: 15,),
+                        RichText(text: TextSpan(
+                          text: "Keep it up\n",
+                          style: TextStyle(
+                            color: color.AppColor.homePagePlanColor,
+                            fontSize: 15
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "stick to your plan"
+                            )
+                          ]
+                        ))
+                      ],
+                    ),
+                  )
+          
                 ],
               ),
             )
+            ,
+            Row(
+                    children:[
+                      Text("Area of Focus",
+                      style: TextStyle(
+                        color: color.AppColor.homePageTitle,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w500
+                      ),
+                      )
+                    ]
+                  )      
 
 
 
