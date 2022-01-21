@@ -2,7 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+// import 'package:video_player_app/video_info.dart';
 import 'colors.dart' as color;
+import 'video_info.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({ Key? key }) : super(key: key);
@@ -82,9 +85,14 @@ class _HomePageState extends State<HomePage> {
                 ),)
                 ,
                 SizedBox(width: 5,),
-                Icon(Icons.arrow_forward_sharp,
-                size: 20,
-                color: color.AppColor.homePageIcons)
+                InkWell(
+                  onTap: () {
+                    Get.to(()=>VideoInfo());
+                  },
+                  child: Icon(Icons.arrow_forward_sharp,
+                  size: 20,
+                  color: color.AppColor.homePageIcons),
+                )
               ],
               )
             ,
