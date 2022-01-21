@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'colors.dart' as color;
@@ -10,6 +12,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  List info = [];
+
+  _initData(){
+    DefaultAssetBundle.of(context).loadString("json/info.json").then((value){
+      info = json.decode(value);
+    });
+
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _initData();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +63,7 @@ class _HomePageState extends State<HomePage> {
               ],
             )
             ,
-            SizedBox(height: 30,),
+            SizedBox(height: 20,),
 
             Row( 
               children: [
@@ -70,7 +88,7 @@ class _HomePageState extends State<HomePage> {
               ],
               )
             ,
-            SizedBox(height: 30,),
+            SizedBox(height: 20,),
 
             Container( 
               width: MediaQuery.of(context).size.width,
@@ -258,16 +276,116 @@ class _HomePageState extends State<HomePage> {
             )
             ,
             Row(
-                    children:[
-                      Text("Area of Focus",
-                      style: TextStyle(
-                        color: color.AppColor.homePageTitle,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w500
-                      ),
-                      )
-                    ]
-                  )      
+              children:[
+                Text("Area of Focus",
+                style: TextStyle(
+                  color: color.AppColor.homePageTitle,
+                  fontSize: 25,
+                  fontWeight: FontWeight.w500
+                ),
+                )
+              ]
+            ),  
+
+            Expanded(child: OverflowBox(
+              maxWidth: MediaQuery.of(context).size.width,
+              child: MediaQuery.removePadding(
+                removeTop: true,
+                context: context,
+                child: ListView.builder(
+                  // itemCount: (info.length/2).toInt()  ,
+                  itemCount: info.length ~/ 2,
+                  itemBuilder: (_, i){
+                    int a = 2*i;
+                    int b = 2*i+1;
+                    return Row(
+                      children: [
+                        Container(
+                          height: 170,
+                          width: (MediaQuery.of(context).size.width-90)/2,
+                          margin: EdgeInsets.only(left: 30, right: 30, bottom: 15, top:15),
+                          padding: EdgeInsets.only(bottom: 5),
+                          decoration: BoxDecoration(
+                            // color: Colors.white,
+                            color: Colors.white,
+                            image: DecorationImage(image: 
+                            AssetImage(info[a]["img"]),
+                            // fit: BoxFit.fill
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 20,
+                                offset: Offset(5,5),
+                                color: color.AppColor.gradientSecond.withOpacity(0.1)
+                              ),
+                              BoxShadow(
+                                blurRadius: 10,
+                                offset: Offset(-5,-5),
+                                color: color.AppColor.gradientSecond.withOpacity(0.1)
+                              ),
+                            ],
+                            borderRadius: BorderRadius.circular(15)
+                          ),
+                          child: Center(
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Text(info[a]["title"] ,
+                                style: TextStyle( 
+                                  fontSize: 20,
+                                  color: color.AppColor.homePageDetail
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                        ,
+                        // SizedBox(height: 20,),
+                        Container(
+                          height: 170,
+                          width: (MediaQuery.of(context).size.width-90)/2,
+                          margin: EdgeInsets.only(right: 30, bottom: 15, top:15  ),
+                          padding: EdgeInsets.only(bottom: 5),
+                          decoration: BoxDecoration(
+                            // color: Colors.white,
+                            color: Colors.white,
+                            image: DecorationImage(image: 
+                            AssetImage(info[b]["img"]),
+                            // fit: BoxFit.fill
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 20,
+                                offset: Offset(5,5),
+                                color: color.AppColor.gradientSecond.withOpacity(0.1)
+                              ),
+                              BoxShadow(
+                                blurRadius: 10,
+                                offset: Offset(-5,-5),
+                                color: color.AppColor.gradientSecond.withOpacity(0.1)
+                              ),
+                            ],
+                            borderRadius: BorderRadius.circular(15)
+                          ),
+                          child: Center(
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Text(info[b]["title"] ,
+                                style: TextStyle( 
+                                  fontSize: 20,
+                                  color: color.AppColor.homePageDetail
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      
+                      ],
+                    );
+                  }),
+              ),
+            )
+            ),
+
 
 
 
