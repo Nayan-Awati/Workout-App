@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 import 'colors.dart' as color;
 
 class VideoInfo extends StatefulWidget {
@@ -16,6 +17,8 @@ class _VideoInfoState extends State<VideoInfo> {
 
 
   List videoinfo = [];
+  bool _playArea = false;
+  late VideoPlayerController _controller;
  
   _initData() async{
     await DefaultAssetBundle.of(context).loadString("json/videoinfo.json").then((value){
@@ -41,7 +44,7 @@ class _VideoInfoState extends State<VideoInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: _playArea == false?BoxDecoration(
           gradient: LinearGradient(
             colors: [color.AppColor.gradientFirst.withOpacity(0.9),
               color.AppColor.secondPageContainerGradient2ndColor
@@ -49,10 +52,17 @@ class _VideoInfoState extends State<VideoInfo> {
             begin: const FractionalOffset(0.0, 0.4),
             end: Alignment.topRight  
           )
-        ),
+        )
+        :
+        BoxDecoration(
+          color: color.AppColor.gradientSecond
+        )
+        
+        ,
+        
         child: Column(
           children: [
-            Container(
+            _playArea == false?Container(
               height: 300,
               width: MediaQuery.of(context).size.width,
               padding: const EdgeInsets.only(top: 70, left: 20, right: 20),
@@ -155,7 +165,35 @@ class _VideoInfoState extends State<VideoInfo> {
                 
               ),
             )
-            // RichText(text: TextSpan())
+            : 
+            Container(
+              child: Column(
+                children:[
+                  Container(
+                    padding: const EdgeInsets.only(top: 50,right: 30, left:30),
+                    height:100,
+                    child: Row(
+                      
+                      children: [
+                        InkWell(
+                          onTap: (){
+                            debugPrint("tapped");
+                          },
+                          child: Icon(Icons.arrow_back_ios,
+                          size: 20, color: color.AppColor.secondPageTopIconColor),
+                          
+                        ),
+                        Expanded(child: Container()),
+                        Icon(Icons.info_outline, size: 20, color: color.AppColor.secondPageTopIconColor,)
+
+                      ],
+                    ),
+                  )
+                ,
+                _playView(context),
+                ]
+              ),
+            )
             ,
             Expanded(child: Container(
               decoration: BoxDecoration(
@@ -200,13 +238,44 @@ class _VideoInfoState extends State<VideoInfo> {
     );
   }
 
+  Widget _playView(BuildContext context){
+    final controller = _controller;
+    if(controller!= null && controller.value.isInitialized){
+      return Container(
+        height: 300,
+        width: 300,
+        child: VideoPlayer(controller),
+      );
+
+    }else{
+        return Text("Being initialized please wait");
+    }
+
+  }
+  _onTapVideo(int index){
+    final controller = VideoPlayerController.network(videoinfo[index]["videoUrl"]);
+    _controller = controller;
+    setState(() {  
+    });
+    controller..initialize().then((_){
+      controller.play();
+      setState(() {
+      });
+    });
+  }
   _listView(){
     return ListView.builder(
                     itemCount: videoinfo.length,
                     itemBuilder: (_, int index){
                       return GestureDetector(
                         onTap: (){
+                          _onTapVideo(index);
                           debugPrint(index.toString());
+                          setState(() {
+                            if(_playArea == false){
+                              _playArea = true;
+                            }
+                          });
                         },
                         child: _buildCard(index),
                       );
