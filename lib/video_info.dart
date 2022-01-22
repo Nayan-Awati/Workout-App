@@ -15,11 +15,14 @@ class VideoInfo extends StatefulWidget {
 class _VideoInfoState extends State<VideoInfo> {
 
 
-  List info = [];
-
-  _initData(){
-    DefaultAssetBundle.of(context).loadString("json/videoinfo.json").then((value){
-      info = json.decode(value);
+  List videoinfo = [];
+ 
+  _initData() async{
+    await DefaultAssetBundle.of(context).loadString("json/videoinfo.json").then((value){
+      
+      setState(() {
+        videoinfo = json.decode(value);
+      });
       
     });
 
@@ -161,7 +164,7 @@ class _VideoInfoState extends State<VideoInfo> {
               ),
               child: Column(
                 children: [
-                  SizedBox(height: 30,),
+                  SizedBox(height: 20,),
                   Row(
                     children: [
                       SizedBox(width: 20,),
@@ -185,6 +188,8 @@ class _VideoInfoState extends State<VideoInfo> {
                       SizedBox(width: 25,)
                     ],
                   )
+                  ,
+                  Expanded(child: _listView())
                 ],
               ),
             )
@@ -193,5 +198,116 @@ class _VideoInfoState extends State<VideoInfo> {
         ),
       ),
     );
+  }
+
+  _listView(){
+    return ListView.builder(
+                    itemCount: videoinfo.length,
+                    itemBuilder: (_, int index){
+                      return GestureDetector(
+                        onTap: (){
+                          debugPrint(index.toString());
+                        },
+                        child: _buildCard(index),
+                      );
+                  });
+  }
+
+  _buildCard (int index){
+    return Container(
+                          height: 135,
+                          margin: EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                           child: Column(
+                             children: [
+                              Row(
+                                 children: [
+                                   Container(
+                                     height: 80,
+                                     width: 80,
+                                     decoration: BoxDecoration(
+                                       image: DecorationImage(
+                                         image: AssetImage(
+                                            videoinfo[index]["thumbnail"]
+                                          ),
+                                          fit: BoxFit.cover,   
+                                        ),
+                                       borderRadius: BorderRadius.circular(10) 
+                                     ),
+                                   )
+                                   ,SizedBox(width: 10,)
+                                  ,
+                                   Column(
+                                     crossAxisAlignment: CrossAxisAlignment.start,
+                                     mainAxisAlignment: MainAxisAlignment.center,
+                                     children:[
+                                       Text(
+                                         videoinfo[index]["title"],
+                                         style: TextStyle(
+                                           fontWeight: FontWeight.bold,
+                                           fontSize: 16,
+
+                                         ),
+                                       ),
+                                       SizedBox(height: 10,),
+                                       Padding(padding: EdgeInsets.only(top: 3),
+                                        child: Text(
+                                          videoinfo[index]["time"],
+                                          style: TextStyle(
+                                            color: Colors.grey[500],
+                                          ),
+                                        ),
+                                       )
+                                     ]
+                                   )
+
+                                 ],
+                               )
+                              ,
+                              SizedBox(height: 18 ,),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 20,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFFeaeefc),
+                                      borderRadius: BorderRadius.circular(10),
+
+                                    ),
+                                    // alignment: Alignment.center ,
+                                    child: Center(
+                                      child: Text(
+                                        "15s rest",
+                                        style: TextStyle(
+                                          color: Color(0xFF839fed)
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  ,
+                                  Row(
+                                    children:[
+                                      for(int i =0; i<80; i++)
+                                      i.isEven?Container(
+                                        height: 1,
+                                        width: 3,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFF839fed),
+                                          borderRadius: BorderRadius.circular(2)
+                                        ),
+                                      )
+                                      : Container(
+                                        height: 1,
+                                        width: 3,
+                                        color: Colors.white,
+                                      )
+                                    ]
+                                  )
+                                ],
+                              )
+                             ],
+                           ),
+                        );
+                        
   }
 }
